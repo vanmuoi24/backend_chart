@@ -11,5 +11,6 @@ import lombok.Data;
 public class SensorResponseDto {
     private Long id; // sensor_id
     private String name; // sensor_name
+    private String unit; // đơn vị đo
     private List<Map<String, Object>> data; // mỗi map: { time, Ax, Ay, ... }
 }

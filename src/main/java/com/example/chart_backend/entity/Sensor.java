@@ -24,6 +24,9 @@ public class Sensor {
 
     @Column(name = "sensor_name")
     private String sensorName;
+    @Column(name = "unit")
+
+    private String unit;
 
     // 1 sensor có nhiều sensor_data
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, orphanRemoval = true)

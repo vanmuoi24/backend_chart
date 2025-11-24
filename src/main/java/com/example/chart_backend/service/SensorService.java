@@ -1,6 +1,6 @@
 package com.example.chart_backend.service;
 
-
+import com.example.chart_backend.dto.request.SensorUpdateRequest;
 import com.example.chart_backend.dto.response.SensorResponseDto;
 import com.example.chart_backend.dto.response.SensorValueDto;
 import com.example.chart_backend.entity.Sensor;
@@ -24,8 +24,7 @@ public class SensorService {
 
     private final SensorRepository sensorRepository;
 
-
-     public List<SensorResponseDto> getAllSensorsWithData() {
+    public List<SensorResponseDto> getAllSensorsWithData() {
         List<Sensor> sensors = sensorRepository.findAll();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -54,14 +53,13 @@ public class SensorService {
                                 row.put(param, d.getValue());
                             });
 
-                    List<Map<String, Object>> data =
-                            new ArrayList<>(groupedByTime.values());
+                    List<Map<String, Object>> data = new ArrayList<>(groupedByTime.values());
 
                     return new SensorResponseDto(
                             sensor.getId(),
                             sensor.getSensorName(),
-                            data
-                    );
+                            sensor.getUnit(),
+                            data);
                 })
                 .collect(Collectors.toList());
     }
@@ -90,6 +88,22 @@ public class SensorService {
 
         List<Map<String, Object>> data = new ArrayList<>(groupedByTime.values());
 
-        return new SensorResponseDto(sensor.getId(), sensor.getSensorName(), data);
+        return new SensorResponseDto(sensor.getId(), sensor.getSensorName(), sensor.getUnit(), data);
     }
+
+    public Sensor updateSensor(Long id, SensorUpdateRequest request) {
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sensor không tồn tại"));
+
+        if (request.getSensorName() != null) {
+            sensor.setSensorName(request.getSensorName());
+        }
+
+        if (request.getUnit() != null) {
+            sensor.setUnit(request.getUnit());
+        }
+
+        return sensorRepository.save(sensor);
+    }
+
 }

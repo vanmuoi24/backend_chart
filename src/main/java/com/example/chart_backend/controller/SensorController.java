@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.chart_backend.dto.request.SensorUpdateRequest;
 import com.example.chart_backend.dto.response.SensorResponseDto;
+import com.example.chart_backend.entity.Sensor;
 import com.example.chart_backend.service.SensorService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,4 +33,14 @@ public class SensorController {
     public ResponseEntity<SensorResponseDto> getSensorWithData(@PathVariable Long id) {
         return ResponseEntity.ok(sensorService.getSensorWithData(id));
     }
+
+    @PutMapping("/{id}")
+public ResponseEntity<?> updateSensor(
+        @PathVariable Long id,
+        @RequestBody SensorUpdateRequest request
+) {
+    Sensor updated = sensorService.updateSensor(id, request);
+    return ResponseEntity.ok(updated);
+}
+
 }

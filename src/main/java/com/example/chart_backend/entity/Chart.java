@@ -2,7 +2,7 @@ package com.example.chart_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.databind.JsonNode; // dùng Jackson để map JSON tự động
+
 
 @Entity
 @Table(name = "chart")
